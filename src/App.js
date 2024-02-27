@@ -1,9 +1,11 @@
+import { Body } from "./components"
 import "./index.css"
+import "./App.css"
 
 function App() {
   return (
     <div>
-      <h1 className=''>Netflix - GPT</h1>
+      <Body />
     </div>
   )
 }
