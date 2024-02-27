@@ -1,12 +1,26 @@
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { Header } from "./index"
 import background from "../assets/images/netflix_background.jpg"
+import { checkValidation } from "../utils/validate"
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const emailRef = useRef(null)
+  const passwordRef = useRef(null)
 
   const handleSignIn = () => {
     setIsSignIn(!isSignIn)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log("sign in button clicked")
+    const formValidationMessage = checkValidation(
+      emailRef.current.value,
+      passwordRef.current.value
+    )
+    setErrorMessage(formValidationMessage)
   }
 
   return (
@@ -28,20 +42,26 @@ const Login = () => {
             />
           )}
           <input
+            ref={emailRef}
             type='text'
             className='p-3 m-2 w-full border border-gray-300 text-white bg-gray-700 rounded-sm'
             placeholder='Email'
           />
           <input
+            ref={passwordRef}
             type='password'
             className='p-3 m-2 w-full border border-gray-300 text-white bg-gray-700 rounded-sm'
             placeholder='Password'
           />
         </div>
-        <button className='p-2 m-2 w-full text-white bg-red-600 rounded-md'>
+        <p className='m-2 text-red-600'>{errorMessage}</p>
+        <button
+          onClick={(e) => handleSubmit(e)}
+          className='p-2 m-2 w-full text-white bg-red-600 rounded-md'
+        >
           Sign In
         </button>
-        <p className='my-4 mx-2 cursor-pointer' onClick={() => handleSignIn()}>
+        <p className='my-4 mx-2 cursor-pointer' onClick={handleSignIn}>
           <span className='text-gray-400'>
             {" "}
             {isSignIn ? "New to Netflix ?" : "Already registered ?"}{" "}
