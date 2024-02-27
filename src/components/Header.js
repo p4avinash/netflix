@@ -2,13 +2,13 @@ import React from "react"
 
 const Header = () => {
   return (
-    <div className='absolute w-full z-10 px-32 py-6 bg-gradient-to-b from-black'>
+    <div className='absolute ease-in-out duration-300 w-full z-10 lg:px-32 px-16  py-6 bg-gradient-to-b from-black'>
       <svg
         viewBox='0 0 111 30'
         version='1.1'
         aria-hidden='true'
         role='img'
-        className='h-10'
+        className='lg:h-10 h-8'
       >
         <g>
           <path
