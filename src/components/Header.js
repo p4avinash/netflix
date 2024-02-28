@@ -1,8 +1,36 @@
-import React from "react"
+import React, { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { removeLoggedInUserData } from "../utils/slices/userSlice"
+import { useNavigate } from "react-router-dom"
+import { signOut } from "firebase/auth"
+import { auth } from "../utils/firebase"
 
 const Header = () => {
+  const [toggleProfileMenu, setToggleProfileMenu] = useState(false)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const user = useSelector((store) => store?.user)
+
+  const handleToggleMenu = () => {
+    setToggleProfileMenu(!toggleProfileMenu)
+  }
+
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        dispatch(removeLoggedInUserData())
+        navigate("/")
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log("something went wrong while sign-out")
+      })
+    navigate("/")
+  }
+
   return (
-    <div className='absolute ease-in-out duration-300 w-full z-10 lg:px-32 px-16  py-6 bg-gradient-to-b from-black'>
+    <div className='absolute ease-in-out duration-300 w-full z-10 lg:pl-32 pl-16 lg:pr-10 pr-6  py-6 bg-gradient-to-b from-black flex justify-between'>
       <svg
         viewBox='0 0 111 30'
         version='1.1'
@@ -17,6 +45,35 @@ const Header = () => {
           ></path>
         </g>
       </svg>
+      <div
+        className='avatar flex flex-col items-center cursor-pointer'
+        onClick={handleToggleMenu}
+      >
+        {user && (
+          <div className='sign-out flex items-center'>
+            <img
+              className='lg:w-10 w-8 '
+              src='https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png?20201013161117'
+              alt='avatarImage'
+            />
+          </div>
+        )}
+      </div>
+      {toggleProfileMenu && (
+        <div className='menu-items absolute right-6 lg:w-28 w-24 lg:my-12 my-10 rounded-md bg-black text-white text-sm'>
+          <ul className='cursor-pointer'>
+            <li className='pb-2 px-3 py-3'>{user?.displayName}</li>
+            <li className='pb-2 px-3 py-3'>About</li>
+
+            <li
+              className='flex justify-center border pt-3 pb-2 border-gray-400'
+              onClick={handleLogout}
+            >
+              Sign Out
+            </li>
+          </ul>
+        </div>
+      )}
     </div>
   )
 }

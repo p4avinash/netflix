@@ -1,12 +1,14 @@
 import React, { useRef, useState } from "react"
 import { Header } from "./index"
-import background from "../assets/images/netflix_background.jpg"
 import { checkValidation } from "../utils/validate"
 import { auth } from "../utils/firebase"
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile,
 } from "firebase/auth"
+import { useDispatch } from "react-redux"
+import { setLoggedInUserData } from "../utils/slices/userSlice"
 import { useNavigate } from "react-router-dom"
 
 const Login = () => {
@@ -15,7 +17,8 @@ const Login = () => {
   const [disableSubmitButton, setDisableSubmitButton] = useState(false)
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
-
+  const fullNameRef = useRef(null)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const handleSignIn = () => {
@@ -24,7 +27,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    setDisableSubmitButton(false)
+    setDisableSubmitButton(true)
     console.log("sign in button clicked")
     const formValidationMessage = checkValidation(
       emailRef.current.value,
@@ -43,12 +46,11 @@ const Login = () => {
           .then((userCredential) => {
             // Signed in
             const user = userCredential.user
-            console.log("sign in user ---", user)
+            console.log("sign in successful")
             if (user) {
               setDisableSubmitButton(false)
               navigate("/browse")
             }
-            // ...
           })
           .catch((error) => {
             const errorCode = error.code
@@ -66,10 +68,31 @@ const Login = () => {
           .then((userCredential) => {
             // Signed up
             const user = userCredential.user
-            console.log("user create status ---", user)
-            setDisableSubmitButton(false)
-            navigate("/browse")
-            // ...
+            console.log("user create successful", user)
+
+            // Update the other details of just created user profile
+            updateProfile(auth.currentUser, {
+              displayName: fullNameRef.current.value,
+              photoURL: "https://example.com/jane-q-user/profile.jpg",
+            })
+              .then(() => {
+                const { uid, email, displayName, photoURL } = auth.currentUser
+                dispatch(
+                  setLoggedInUserData({
+                    uid,
+                    email,
+                    displayName,
+                    photoURL,
+                  })
+                )
+                console.log("user update successful")
+                navigate("/browse")
+                setDisableSubmitButton(false)
+              })
+              .catch((error) => {
+                // An error occurred
+                console.log("something went wrong while updating the user")
+              })
           })
           .catch((error) => {
             const errorCode = error.code
@@ -80,22 +103,20 @@ const Login = () => {
           })
       }
     }
-    // setDisableSubmitButton(false)
+    setDisableSubmitButton(false)
   }
 
   return (
     <div className='bg-black w-full h-screen ease-in-out duration-300 background-image'>
       <Header />
-      {/* <div className='absolute'>
-        <img src={background} className='background-image' alt='background' />
-      </div> */}
-      <form className='absolute bg-black lg:bg-opacity-85 md:bg-opacity-85 my-32 right-0 left-0 mx-auto p-10 rounded-md lg:w-3/12 md:w-4/12 sm:w-full text-white'>
+      <form className='absolute bg-black bg-opacity-85 my-[25vh] right-0 left-0 mx-auto p-10 rounded-md lg:w-4/12 md:w-4/12 sm:w-full text-white'>
         <div className=''>
           <h1 className='text-3xl font-bold text-white pb-8'>
             {isSignIn ? "Sign In" : "Sign Up"}
           </h1>
           {!isSignIn && (
             <input
+              ref={fullNameRef}
               type='text'
               className='p-3 m-2 w-full border border-gray-300 text-white bg-gray-700 rounded-sm'
               placeholder='Full Name'
@@ -122,7 +143,7 @@ const Login = () => {
             disableSubmitButton ? "cursor-not-allowed bg-red-500" : ""
           } p-2 m-2 w-full text-white bg-red-700 rounded-md `}
         >
-          Sign In
+          {isSignIn ? "Sign In" : "Sign Up"}
         </button>
         <p className='my-2 mx-2 cursor-pointer' onClick={handleSignIn}>
           <span className='text-gray-400'>
