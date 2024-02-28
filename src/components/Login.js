@@ -49,7 +49,6 @@ const Login = () => {
             console.log("sign in successful")
             if (user) {
               setDisableSubmitButton(false)
-              navigate("/browse")
             }
           })
           .catch((error) => {
@@ -86,7 +85,6 @@ const Login = () => {
                   })
                 )
                 console.log("user update successful")
-                navigate("/browse")
                 setDisableSubmitButton(false)
               })
               .catch((error) => {

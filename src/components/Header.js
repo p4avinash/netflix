@@ -1,8 +1,11 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { removeLoggedInUserData } from "../utils/slices/userSlice"
+import {
+  removeLoggedInUserData,
+  setLoggedInUserData,
+} from "../utils/slices/userSlice"
 import { useNavigate } from "react-router-dom"
-import { signOut } from "firebase/auth"
+import { signOut, onAuthStateChanged } from "firebase/auth"
 import { auth } from "../utils/firebase"
 
 const Header = () => {
@@ -20,7 +23,6 @@ const Header = () => {
       .then(() => {
         // Sign-out successful.
         dispatch(removeLoggedInUserData())
-        navigate("/")
       })
       .catch((error) => {
         // An error happened.
@@ -28,6 +30,22 @@ const Header = () => {
       })
     navigate("/")
   }
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("user from authStateChanged")
+        // User is signed in, see docs for a list of available properties
+        const { uid, email, displayName, photoURL } = user
+        dispatch(setLoggedInUserData({ uid, email, displayName, photoURL }))
+        navigate("/browse")
+      } else {
+        // User is signed out
+        dispatch(removeLoggedInUserData())
+        navigate("/")
+      }
+    })
+  }, [])
 
   return (
     <div className='absolute ease-in-out duration-300 w-full z-10 lg:pl-32 pl-16 lg:pr-10 pr-6  py-6 bg-gradient-to-b from-black flex justify-between'>
