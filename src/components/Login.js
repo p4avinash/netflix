@@ -33,7 +33,7 @@ const Login = () => {
       passwordRef.current.value
     )
     setErrorMessage(formValidationMessage)
-    if (errorMessage === null) {
+    if (formValidationMessage === null) {
       if (isSignIn) {
         // Authenticate User
 

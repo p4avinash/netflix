@@ -17,6 +17,7 @@ const useMovieTrailer = (movieId) => {
         (item) => item.type === "Trailer"
       )
       const trailer = filteredData.length ? filteredData[0] : data.results[0]
+
       dispatch(setMovieTrailerToStore(trailer))
     } catch (error) {
       console.log(error)

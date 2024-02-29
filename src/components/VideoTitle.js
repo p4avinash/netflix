@@ -3,9 +3,9 @@ import playIcon from "../assets/images/play_icon.png"
 
 const VideoTitle = ({ title, overview }) => {
   return (
-    <div className='pt-[20%] px-24 absolute w-screen lg:aspect-video aspect-auto text-white bg-gradient-to-r from-black overflow-x-hidden'>
+    <div className='pt-[15%] px-5 absolute w-screen lg:aspect-video aspect-auto text-white bg-gradient-to-r from-black'>
       <h1 className='lg:text-6xl md:text-6xl text-xl font-bold'>{title}</h1>
-      <p className='py-6 lg:text-lg md:text-lg text-sm lg:w-1/4 md:w-1/4 w-full'>
+      <p className='lg:py-6 md:py-6 py-3 lg:text-lg md:text-lg text-sm lg:w-1/4 md:w-1/4 w-full'>
         {overview}
       </p>
       <div className='buttons flex'>

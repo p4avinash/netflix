@@ -9,9 +9,9 @@ const VideoBackground = ({ movieId }) => {
   const trailerFromStore = useSelector((store) => store.movies.movieTrailer)
 
   return (
-    <div className='overflow-x-hidden video-background'>
+    <div className='video-background '>
       <iframe
-        className='w-screen lg:aspect-video md:aspect-video aspect-auto'
+        className='w-screen aspect-video'
         // width='560'
         // height='315'
         src={`https://www.youtube.com/embed/${trailerFromStore?.key}?autoplay=1&mute=1&showinfo=0&loop=1&playlist=${trailerFromStore?.key}&rel=0`}

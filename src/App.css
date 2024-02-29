@@ -4,3 +4,21 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+/* width */
+::-webkit-scrollbar {
+  height: 10px;
+  width: 0px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  /* box-shadow: inset 0 0 5px rgb(49, 49, 49); */
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(189, 189, 189);
+  border-radius: 10px;
+}
