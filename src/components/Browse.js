@@ -1,12 +1,16 @@
 import React from "react"
-import { Header } from "./index"
+import { Header, MainContainer, SecondaryContainer } from "./index"
+import useNowPlayingMovies from "../utils/hooks/useNowPlayingMovies"
 
 const Browse = () => {
+  //Fetch movies data from API and update the store by calling custom hook
+  useNowPlayingMovies()
+
   return (
     <div className=''>
-      <div className='header'>
-        <Header />
-      </div>
+      <Header />
+      <MainContainer />
+      <SecondaryContainer />
     </div>
   )
 }

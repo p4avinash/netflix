@@ -4,6 +4,10 @@ import {
   removeLoggedInUserData,
   setLoggedInUserData,
 } from "../utils/slices/userSlice"
+import {
+  removeNowPlayingMoviesFromStore,
+  removeMovieTrailerFromStore,
+} from "../utils/slices/moviesSlice"
 import { useNavigate } from "react-router-dom"
 import { signOut, onAuthStateChanged } from "firebase/auth"
 import { auth } from "../utils/firebase"
@@ -23,6 +27,8 @@ const Header = () => {
       .then(() => {
         // Sign-out successful.
         dispatch(removeLoggedInUserData())
+        dispatch(removeNowPlayingMoviesFromStore())
+        dispatch(removeMovieTrailerFromStore())
       })
       .catch((error) => {
         // An error happened.
@@ -32,9 +38,8 @@ const Header = () => {
   }
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("user from authStateChanged")
         // User is signed in, see docs for a list of available properties
         const { uid, email, displayName, photoURL } = user
         dispatch(setLoggedInUserData({ uid, email, displayName, photoURL }))
@@ -42,9 +47,13 @@ const Header = () => {
       } else {
         // User is signed out
         dispatch(removeLoggedInUserData())
+        dispatch(removeNowPlayingMoviesFromStore())
+        dispatch(removeMovieTrailerFromStore())
         navigate("/")
       }
     })
+
+    return () => unsubscribe()
   }, [])
 
   return (
@@ -71,7 +80,7 @@ const Header = () => {
           <div className='sign-out flex items-center'>
             <img
               className='lg:w-10 w-8 '
-              src='https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png?20201013161117'
+              src={user?.photoURL}
               alt='avatarImage'
             />
           </div>

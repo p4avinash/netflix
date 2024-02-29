@@ -9,7 +9,7 @@ import {
 } from "firebase/auth"
 import { useDispatch } from "react-redux"
 import { setLoggedInUserData } from "../utils/slices/userSlice"
-import { useNavigate } from "react-router-dom"
+import { AVATAR_URL } from "../utils/constant"
 
 const Login = () => {
   const [isSignIn, setIsSignIn] = useState(true)
@@ -19,7 +19,6 @@ const Login = () => {
   const passwordRef = useRef(null)
   const fullNameRef = useRef(null)
   const dispatch = useDispatch()
-  const navigate = useNavigate()
 
   const handleSignIn = () => {
     setIsSignIn(!isSignIn)
@@ -72,7 +71,7 @@ const Login = () => {
             // Update the other details of just created user profile
             updateProfile(auth.currentUser, {
               displayName: fullNameRef.current.value,
-              photoURL: "https://example.com/jane-q-user/profile.jpg",
+              photoURL: AVATAR_URL,
             })
               .then(() => {
                 const { uid, email, displayName, photoURL } = auth.currentUser
