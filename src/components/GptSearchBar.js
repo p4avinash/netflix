@@ -17,7 +17,7 @@ const GptSearchBar = () => {
   const searchMovieTMDB = async (movieName) => {
     try {
       const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?query=${movieName}&include_adult=false&page=1`,
+        `https://api.themoviedb.org/3/search/movie?query=${movieName}&include_adult=true&page=1`,
         API_OPTIONS
       )
       const movieData = await response.json()
