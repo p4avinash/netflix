@@ -11,12 +11,17 @@ import {
 import { useNavigate } from "react-router-dom"
 import { signOut, onAuthStateChanged } from "firebase/auth"
 import { auth } from "../utils/firebase"
+import { toggleGptSearchState } from "../utils/slices/gptSlice"
+import { SUPPORTED_LANGUAGES } from "../utils/constant"
+import { changeLanguage } from "../utils/slices/configSlice"
+import { lang } from "../utils/languageConstant"
 
 const Header = () => {
   const [toggleProfileMenu, setToggleProfileMenu] = useState(false)
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const user = useSelector((store) => store?.user)
+  const selectedLanguage = useSelector((store) => store.config.language)
 
   const handleToggleMenu = () => {
     setToggleProfileMenu(!toggleProfileMenu)
@@ -35,6 +40,14 @@ const Header = () => {
         console.log("something went wrong while sign-out")
       })
     navigate("/")
+  }
+
+  const handleGptSearchToggle = () => {
+    dispatch(toggleGptSearchState())
+  }
+
+  const handleLanguageChange = (e) => {
+    dispatch(changeLanguage(e.target.value))
   }
 
   useEffect(() => {
@@ -58,7 +71,7 @@ const Header = () => {
   }, [])
 
   return (
-    <div className='absolute ease-in-out duration-300 w-full z-10 lg:pl-32 pl-16 lg:pr-10 pr-6  py-6 bg-gradient-to-b from-black flex justify-between'>
+    <div className='absolute ease-in-out duration-300 w-full z-10 lg:pl-32 md:pl-32 pl-5 lg:pr-10 pr-6 py-6 bg-gradient-to-b from-black flex justify-between'>
       <svg
         viewBox='0 0 111 30'
         version='1.1'
@@ -73,14 +86,38 @@ const Header = () => {
           ></path>
         </g>
       </svg>
-      <div
-        className='avatar flex flex-col items-center cursor-pointer'
-        onClick={handleToggleMenu}
-      >
+      <div className='avatar flex items-center cursor-pointer'>
+        {user && (
+          <div className=' flex items-center '>
+            <select
+              onChange={(e) => handleLanguageChange(e)}
+              className='lg:py-2 md:py-2 py-1 bg-gray-700  mr-2 rounded-md w-20 cursor-pointer text-white outline-none'
+            >
+              {SUPPORTED_LANGUAGES.map((lang) => {
+                return (
+                  <option key={lang.identifier} value={lang.identifier}>
+                    {lang.name}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+        )}
+        {user && (
+          <div className=' flex items-center '>
+            <button
+              onClick={handleGptSearchToggle}
+              className='px-2 lg:py-2 md:py-2 py-1 bg-red-700 text-white mr-2 rounded-md'
+            >
+              {lang[selectedLanguage].suggestions}
+            </button>
+          </div>
+        )}
         {user && (
           <div className='sign-out flex items-center'>
             <img
-              className='lg:w-10 w-8 '
+              onClick={handleToggleMenu}
+              className='lg:w-10 w-8 rounded-md'
               src={user?.photoURL}
               alt='avatarImage'
             />

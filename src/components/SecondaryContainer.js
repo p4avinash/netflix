@@ -1,10 +1,11 @@
 import React from "react"
 import { MoviesList } from "./index"
 import { useSelector } from "react-redux"
+import { lang } from "../utils/languageConstant"
 
 const SecondaryContainer = () => {
   const moviesFromStore = useSelector((store) => store.movies)
-  console.log("moviesFromStore", moviesFromStore)
+  const selectedLanguage = useSelector((store) => store.config.language)
 
   return (
     moviesFromStore?.nowPlayingMovies &&
@@ -14,19 +15,19 @@ const SecondaryContainer = () => {
       <div className='bg-black'>
         <div className='lg:-mt-52 lg:relative lg:z-10 '>
           <MoviesList
-            title={"Now Playing"}
+            title={lang[selectedLanguage].nowPlaying}
             movies={moviesFromStore?.nowPlayingMovies}
           />
           <MoviesList
-            title={"Popular"}
+            title={lang[selectedLanguage].popular}
             movies={moviesFromStore?.popularMovies}
           />
           <MoviesList
-            title={"Top Rated"}
+            title={lang[selectedLanguage].topRated}
             movies={moviesFromStore?.topRatedMovies}
           />
           <MoviesList
-            title={"Upcoming"}
+            title={lang[selectedLanguage].upcoming}
             movies={moviesFromStore?.upcomingMovies}
           />
           {/* 
