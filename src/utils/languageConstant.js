@@ -10,7 +10,7 @@ export const lang = {
     topRated: "Top Rated",
     upcoming: "Upcoming",
     about: "About",
-    signout: "Sign Out",
+    signOut: "Sign Out",
   },
   hindi: {
     search: "खोजे",
@@ -23,7 +23,7 @@ export const lang = {
     topRated: "टॉप रेटेड",
     upcoming: "आगामी",
     about: "के बारे में",
-    signout: "बहार जाये",
+    signOut: "बहार जाये",
   },
   spanish: {
     search: "Buscar",
@@ -36,6 +36,6 @@ export const lang = {
     topRated: "Los más valorados",
     upcoming: "Próxima",
     about: "Acerca de",
-    signout: "Desconectar",
+    signOut: "Desconectar",
   },
 }

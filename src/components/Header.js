@@ -128,13 +128,13 @@ const Header = () => {
         <div className='menu-items absolute right-6 lg:w-28 w-24 lg:my-12 my-10 rounded-md bg-black text-white text-sm'>
           <ul className='cursor-pointer'>
             <li className='pb-2 px-3 py-3'>{user?.displayName}</li>
-            <li className='pb-2 px-3 py-3'>About</li>
+            <li className='pb-2 px-3 py-3'>{lang[selectedLanguage].about}</li>
 
             <li
-              className='flex justify-center border pt-3 pb-2 border-gray-400'
+              className='flex justify-center border  pt-3 pb-2 border-gray-400'
               onClick={handleLogout}
             >
-              Sign Out
+              {lang[selectedLanguage].signOut}
             </li>
           </ul>
         </div>
