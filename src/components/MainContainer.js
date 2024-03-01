@@ -12,7 +12,7 @@ const MainContainer = () => {
   // console.log("moviesTrailer", movieTrailer)
 
   return (
-    <div>
+    <div className=''>
       <VideoTitle title={original_title} overview={overview} />
       <VideoBackground movieId={id} />
     </div>

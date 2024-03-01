@@ -1,7 +1,7 @@
 .background-image {
   background-image: url(../src//assets/images/netflix_background.jpg);
   background-position: center;
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat; */
   background-size: cover;
 }
 
@@ -21,4 +21,8 @@
 ::-webkit-scrollbar-thumb {
   background: rgb(189, 189, 189);
   border-radius: 10px;
+}
+
+.text-shadow {
+  text-shadow: 5px 5px #000000;
 }

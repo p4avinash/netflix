@@ -14,6 +14,9 @@ const appRouter = createBrowserRouter([
 ])
 
 const Body = () => {
+  console.log("body", process.env.REACT_APP_OPENAI_API_KEY)
+  console.log("key", process.env.REACT_APP_TMDB_READ_ACCESS_TOKEN)
+  console.log("random", process.env.REACT_APP_FIREBASE_API_KEY)
   return (
     <div className=''>
       <RouterProvider router={appRouter} />
