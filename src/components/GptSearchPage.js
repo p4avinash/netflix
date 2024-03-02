@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux"
 import { GptSearchBar, GptMovieSuggestions } from "./index"
-import backgroundImage from "../assets/images/netflix_background.jpg"
+import backgroundImage from "../assets/images/netflix_background_large.jpg"
 
 const GptSearchPage = () => {
   const isLoading = useSelector((store) => store.gpt.gptIsLoading)
