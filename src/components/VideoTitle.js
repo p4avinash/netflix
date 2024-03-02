@@ -7,7 +7,7 @@ const VideoTitle = ({ title, overview }) => {
   const selectedLanguage = useSelector((store) => store.config.language)
 
   return (
-    <div className='pt-[15%] px-5 absolute w-screen lg:aspect-video aspect-auto text-white bg-gradient-to-r from-black'>
+    <div className='pt-[15%] px-5 absolute w-screen lg:aspect-video sm:aspect-video md:aspect-video aspect-auto text-white bg-gradient-to-r from-black'>
       <h1 className='lg:text-6xl md:text-6xl text-xl font-bold'>{title}</h1>
       <p className='lg:py-6 md:py-6 py-3 lg:text-lg md:text-lg text-sm lg:w-1/4 md:w-1/4 w-full'>
         {overview}
