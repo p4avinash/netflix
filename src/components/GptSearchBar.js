@@ -2,6 +2,7 @@ import { useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { lang } from "../utils/languageConstant"
 import openai from "../utils/openai"
+// import ai from "../utils/gemini"
 import { API_OPTIONS } from "../utils/constant"
 import {
   addGptMovieListToStore,
@@ -18,7 +19,7 @@ const GptSearchBar = () => {
     try {
       const response = await fetch(
         `https://api.themoviedb.org/3/search/movie?query=${movieName}&include_adult=true&page=1`,
-        API_OPTIONS
+        API_OPTIONS,
       )
       const movieData = await response.json()
       return movieData.results
@@ -38,17 +39,31 @@ const GptSearchBar = () => {
       searchRef.current.value +
       ". Only give me name of 5 movies, comma separated like the example result given ahead. Example Result: Suzume, Animal, Spider-Man, Your Name, Sam Bahadur"
 
+    // const gptResults = await openai.chat.completions.create({
+    //   messages: [{ role: "user", content: gptQuery }],
+    //   model: "gpt-3.5-turbo",
+    // })
+
     const gptResults = await openai.chat.completions.create({
-      messages: [{ role: "user", content: gptQuery }],
-      model: "gpt-3.5-turbo",
+      model: "llama-3.3-70b-versatile",
+      messages: [
+        {
+          role: "user",
+          content: gptQuery,
+        },
+      ],
     })
+
+    const gptMovies = gptResults?.choices[0]?.message?.content
+      ?.split(",")
+      ?.map((movie) => movie?.trim())
 
     if (!gptResults.choices) {
       //Handle the error on fail
       console.log("handle error")
     }
 
-    const gptMovies = gptResults.choices[0].message.content.split(",")
+    // const gptMovies = gptResults.choices[0].message.content.split(",")
 
     //For all the movies in the array, search TMDB API
     const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie))
@@ -58,13 +73,13 @@ const GptSearchBar = () => {
       addGptMovieListToStore({
         movieNames: gptMovies,
         movieResults: tmdbResults,
-      })
+      }),
     )
     dispatch(toggleGptIsLoading(false))
   }
 
   return (
-    <div className='lg:py-[15%] md:py-[15%] py-[25%] flex justify-center'>
+    <div className='lg:pt-[10%] md:pt-[12%] pt-[25%] pb-20 flex justify-center'>
       <form
         onSubmit={(e) => e.preventDefault()}
         className='lg:w-1/2 md:w-1/2 w-full bg-black grid grid-cols-12 rounded-md'
