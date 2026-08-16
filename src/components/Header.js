@@ -70,13 +70,14 @@ const Header = () => {
   }, [])
 
   return (
-    <div className='absolute ease-in-out duration-300 w-full z-10 lg:pl-32 md:pl-32 pl-5 lg:pr-10 pr-6 py-6 bg-gradient-to-b from-black flex justify-between'>
+    <div className='absolute w-full z-30 px-3 sm:px-8 md:px-16 py-3 sm:py-5 bg-gradient-to-b from-black/90 to-transparent flex items-center justify-between transition-all duration-300'>
       <svg
         viewBox='0 0 111 30'
         version='1.1'
         aria-hidden='true'
         role='img'
-        className='lg:h-10 h-8'
+        className='h-6 sm:h-8 md:h-10 cursor-pointer flex-shrink-0'
+        onClick={() => navigate("/browse")}
       >
         <g>
           <path
@@ -85,59 +86,64 @@ const Header = () => {
           ></path>
         </g>
       </svg>
-      <div className='avatar flex items-center cursor-pointer'>
+
+      <div className='flex items-center gap-1.5 sm:gap-3 relative'>
         {user && (
-          <div className=' flex items-center '>
-            <select
-              onChange={(e) => handleLanguageChange(e)}
-              className='lg:py-2 md:py-2 py-1 bg-gray-700  mr-2 rounded-md w-20 cursor-pointer text-white outline-none'
-            >
-              {SUPPORTED_LANGUAGES.map((lang) => {
-                return (
-                  <option key={lang.identifier} value={lang.identifier}>
-                    {lang.name}
-                  </option>
-                )
-              })}
-            </select>
-          </div>
+          <select
+            onChange={(e) => handleLanguageChange(e)}
+            className='px-2 py-1 text-xs sm:text-sm bg-neutral-800/90 text-white rounded-md cursor-pointer outline-none border border-neutral-700 hover:border-neutral-500 transition-colors'
+          >
+            {SUPPORTED_LANGUAGES.map((lang) => {
+              return (
+                <option key={lang.identifier} value={lang.identifier}>
+                  {lang.name}
+                </option>
+              )
+            })}
+          </select>
         )}
+
         {user && (
-          <div className=' flex items-center '>
-            <button
-              onClick={handleGptSearchToggle}
-              className='px-2 lg:py-2 md:py-2 py-1 bg-red-700 text-white mr-2 rounded-md'
-            >
+          <button
+            onClick={handleGptSearchToggle}
+            className='px-2.5 py-1 sm:px-4 sm:py-1.5 text-xs sm:text-sm font-medium bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors shadow-md flex items-center gap-1'
+          >
+            <span>✨</span>
+            <span className='hidden xs:inline sm:inline'>
               {lang[selectedLanguage].suggestions}
-            </button>
-          </div>
+            </span>
+          </button>
         )}
+
         {user && (
-          <div className='sign-out flex items-center'>
+          <div className='relative'>
             <img
               onClick={handleToggleMenu}
-              className='lg:w-10 w-8 rounded-md'
+              className='w-7 h-7 sm:w-9 sm:h-9 rounded-md cursor-pointer border border-neutral-700 hover:border-red-600 transition-all'
               src={user?.photoURL}
               alt='avatarImage'
             />
+            {toggleProfileMenu && (
+              <div className='absolute right-0 top-11 w-36 sm:w-44 bg-neutral-900/95 border border-neutral-800 rounded-lg shadow-2xl backdrop-blur-md text-white text-xs sm:text-sm z-50 overflow-hidden animate-fadeIn'>
+                <div className='p-3 border-b border-neutral-800 font-semibold truncate text-gray-200'>
+                  {user?.displayName || "User"}
+                </div>
+                <ul>
+                  <li className='px-3 py-2 hover:bg-neutral-800 cursor-pointer text-gray-300 transition-colors'>
+                    {lang[selectedLanguage].about}
+                  </li>
+                  <li
+                    className='px-3 py-2 hover:bg-red-600/20 text-red-500 font-medium cursor-pointer transition-colors border-t border-neutral-800'
+                    onClick={handleLogout}
+                  >
+                    {lang[selectedLanguage].signOut}
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
         )}
       </div>
-      {toggleProfileMenu && (
-        <div className='menu-items absolute right-6 lg:w-28 w-24 lg:my-12 my-10 rounded-md bg-black text-white text-sm'>
-          <ul className='cursor-pointer'>
-            <li className='pb-2 px-3 py-3'>{user?.displayName}</li>
-            <li className='pb-2 px-3 py-3'>{lang[selectedLanguage].about}</li>
-
-            <li
-              className='flex justify-center border  pt-3 pb-2 border-gray-400'
-              onClick={handleLogout}
-            >
-              {lang[selectedLanguage].signOut}
-            </li>
-          </ul>
-        </div>
-      )}
     </div>
   )
 }

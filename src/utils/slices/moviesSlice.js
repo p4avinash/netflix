@@ -8,8 +8,17 @@ const moviesSlice = createSlice({
     popularMovies: null,
     topRatedMovies: null,
     upcomingMovies: null,
+    trailerModalMovie: null,
   },
   reducers: {
+    openTrailerModal: (state, action) => {
+      state.trailerModalMovie = action.payload
+    },
+
+    closeTrailerModal: (state) => {
+      state.trailerModalMovie = null
+    },
+
     addNowPlayingMoviesToStore: (state, action) => {
       state.nowPlayingMovies = action.payload
     },
@@ -53,6 +62,8 @@ const moviesSlice = createSlice({
 })
 
 export const {
+  openTrailerModal,
+  closeTrailerModal,
   addNowPlayingMoviesToStore,
   setMovieTrailerToStore,
   addPopularMoviesToStore,

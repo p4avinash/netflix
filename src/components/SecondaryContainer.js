@@ -13,7 +13,7 @@ const SecondaryContainer = () => {
     moviesFromStore?.topRatedMovies &&
     moviesFromStore?.upcomingMovies && (
       <div className='bg-black'>
-        <div className='lg:-mt-52 lg:relative lg:z-10 '>
+        <div className='relative z-20 -mt-10 sm:-mt-24 md:-mt-36 lg:-mt-52 pb-8'>
           <MoviesList
             title={lang[selectedLanguage].nowPlaying}
             movies={moviesFromStore?.nowPlayingMovies}
